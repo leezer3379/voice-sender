@@ -1,0 +1,26 @@
+---
+logger:
+  dir: "logs/voice-sender"
+  level: "DEBUG"
+  keepHours: 24
+
+redis:
+  addr: "127.0.0.1:6379"
+  pass: ""
+  db: 0
+  idle: 5
+  timeout:
+    conn: 500
+    read: 3000
+    write: 3000
+
+# 这个配置不用动，worker是调用voice的并发数
+consumer:
+  queue: "/n9e/sender/voice"
+  worker: 10
+
+voice:
+  ttscode: "TTS_xxx"
+  calledshownumber: "00000000000"
+  ttsparam:
+    sname: "策略名称"
