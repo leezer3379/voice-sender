@@ -48,7 +48,9 @@ func (c *Client) GetMobiles() []string {
 func (c *Client) Send(mobile string, sname string) error {
 	//var sendttsparam map[string]string
 	//sendttsparam["ops"] = c
-
+	if mobile == "" {
+		fmt.Printf("%s 未填写手机号码。",sname)
+	}
 	sendttsparam := make(map[string]interface{})
 	sendttsparam["Sname"] = sname
 
@@ -74,7 +76,7 @@ func (c *Client) Send(mobile string, sname string) error {
 
 	response, err := client.ProcessCommonRequest(request)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	fmt.Print(response.GetHttpContentString())
 	return err
