@@ -41,6 +41,10 @@ func SendVoice() {
 }
 
 func V3SendVoice(mobile,context string) {
+	c := config.Get()
+
+	voiceClient := corp.New(c.Voice.Mobiles,c.Voice.Message, c.Voice.TtsCode,c.Voice.CalledShowNumber, c.Voice.TtsParam.Sname)
+
 	err := voiceClient.Send(mobile,context)
 	if err != nil {
 		logger.Errorf("api send to %s fail:  %v", mobile, err)
