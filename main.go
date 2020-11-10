@@ -82,8 +82,12 @@ func sendVoice(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("OK")
 	} else {
 		//请求的是登录数据，那么执行登录的逻辑判断
-		fmt.Println("username:", r.Form["username"])
-		fmt.Println("password:", r.Form["password"])
+		fmt.Println("Tos:", r.Form["Tos"])
+		fmt.Println("Tos:", r.Form["tos"])
+		fmt.Println("Subject:", r.Form["Subject"])
+		fmt.Println("Subject:", r.Form["subject"])
+		fmt.Println("Content", r.Form["Content"])
+		fmt.Println("Content", r.Form["content"])
 	}
 }
 
