@@ -2,6 +2,12 @@ package dataobj
 
 import "time"
 
+type V3Message struct {
+	Tos     []string `json:"tos"`
+	Subject string   `json:"subject"`
+	Content string   `json:"content"`
+}
+
 type Message struct {
 	Tos              []string `json:"tos"`
 	Event            *Event   `json:"event"`

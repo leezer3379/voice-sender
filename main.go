@@ -1,8 +1,10 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
+	"github.com/leezer3379/voice-sender/dataobj"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -91,6 +93,16 @@ func sendVoice(w http.ResponseWriter, r *http.Request) {
 		//fmt.Println("Content", r.Form["content"])
 		s, _ := ioutil.ReadAll(r.Body) //把  body 内容读入字符串 s
 		fmt.Println("body: ", string(s))
+		var v3message dataobj.V3Message
+		err := json.Unmarshal(s, &v3message)
+		if err != nil {
+			logger.Errorf("unmarshal message failed, err: %v, redis reply: %v", err)
+
+		}
+		fmt.Println("Tos: ", v3message.Tos)
+		fmt.Println("Subject: ", v3message.Subject)
+		fmt.Println("Content: ", v3message.Content)
+
 	}
 }
 
