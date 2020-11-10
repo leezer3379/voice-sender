@@ -68,7 +68,7 @@ func main() {
 }
 func startHttp() {
 	http.HandleFunc("/voice", sendVoice) //设置访问的路由
-	err := http.ListenAndServe(":2008", nil) //设置监听的端口
+	err := http.ListenAndServe("127.0.0.1:2008", nil) //设置监听的端口
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
