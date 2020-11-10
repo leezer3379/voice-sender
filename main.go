@@ -90,7 +90,7 @@ func sendVoice(w http.ResponseWriter, r *http.Request) {
 		//fmt.Println("Content", r.Form["Content"])
 		//fmt.Println("Content", r.Form["content"])
 		s, _ := ioutil.ReadAll(r.Body) //把  body 内容读入字符串 s
-		fmt.Print("body: ", s)
+		fmt.Println("body: ", s)
 	}
 }
 
