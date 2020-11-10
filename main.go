@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -88,6 +89,8 @@ func sendVoice(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Subject:", r.Form["subject"])
 		fmt.Println("Content", r.Form["Content"])
 		fmt.Println("Content", r.Form["content"])
+		s, _ := ioutil.ReadAll(r.Body) //把  body 内容读入字符串 s
+		fmt.Fprintf(w, "%s", s)
 	}
 }
 
