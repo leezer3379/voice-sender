@@ -4,12 +4,12 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"os"
+	"github.com/aliyun/alibaba-cloud-sdk-go/sdk"
+	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
 	"io/ioutil"
 	"net/http"
 	"net/url"
-	"github.com/aliyun/alibaba-cloud-sdk-go/sdk"
-	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
-	"os"
 )
 
 
@@ -56,7 +56,8 @@ func (c *Client) Send(mobile string, sname string) error {
 
 	dataType , _ := json.Marshal(sendttsparam)
 	endttsparam := string(dataType)
-	client, err := sdk.NewClientWithAccessKey(os.Getenv("REGION_ID"), os.Getenv("ACCESS_KEY_ID"), os.Getenv("ACCESS_KEY_SECRET"))
+	client, err := sdk.NewClientWithAccessKey(os.Getenv("VOICE_REGION_ID"), os.Getenv("VOICE_ACCESS_KEY_ID"), os.Getenv("VOICE_ACCESS_KEY_SECRET"))
+
 	if err != nil {
 		panic(err)
 	}
@@ -68,7 +69,7 @@ func (c *Client) Send(mobile string, sname string) error {
 	request.Domain = "dyvmsapi.aliyuncs.com"
 	request.Version = "2017-05-25"
 	request.ApiName = "SingleCallByTts"
-	request.QueryParams["RegionId"] = os.Getenv("REGION_ID")
+	request.QueryParams["RegionId"] = "cn-beijing"
 	request.QueryParams["CalledNumber"] = mobile
 	request.QueryParams["TtsCode"] = c.TtsCode
 	request.QueryParams["CalledShowNumber"] = c.CalledShowNumber
