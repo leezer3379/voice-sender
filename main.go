@@ -84,13 +84,7 @@ func sendVoice(w http.ResponseWriter, r *http.Request) {
 
 		fmt.Println("OK")
 	} else {
-		//请求的是登录数据，那么执行登录的逻辑判断
-		//fmt.Println("Tos:", r.Form["Tos"])
-		//fmt.Println("Tos:", r.Form["tos"])
-		//fmt.Println("Subject:", r.Form["Subject"])
-		//fmt.Println("Subject:", r.Form["subject"])
-		//fmt.Println("Content", r.Form["Content"])
-		//fmt.Println("Content", r.Form["content"])
+
 		s, _ := ioutil.ReadAll(r.Body) //把  body 内容读入字符串 s
 		fmt.Println("body: ", string(s))
 		var v3message dataobj.V3Message
@@ -102,6 +96,12 @@ func sendVoice(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Tos: ", v3message.Tos)
 		fmt.Println("Subject: ", v3message.Subject)
 		fmt.Println("Content: ", v3message.Content)
+		if count := len(v3message.Tos); count > 0 {
+			for _, mobile := range v3message.Tos {
+				go cron.V3SendVoice(mobile, v3message.Content)
+
+			}
+		}
 
 	}
 }

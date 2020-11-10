@@ -40,6 +40,13 @@ func SendVoice() {
 	}
 }
 
+func V3SendVoice(mobile,context string) {
+	err := voiceClient.Send(mobile,context)
+	if err != nil {
+		logger.Errorf("api send to %s fail:  %v", mobile, err)
+	}
+}
+
 func SendAllVoice(messages []*dataobj.Message) {
 	for _, message := range messages {
 		semaphore <- 1
@@ -89,9 +96,6 @@ func pasteMobile(message *dataobj.Message) []string {
 }
 
 func genContent(message *dataobj.Message) string {
-
-
-
 
 	sendttsparam := make(map[string]interface{})
 	sendttsparam["Sname"] = message.Event.Sname
