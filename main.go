@@ -20,7 +20,7 @@ import (
 
 	"github.com/leezer3379/voice-sender/config"
 	"github.com/leezer3379/voice-sender/cron"
-	"github.com/leezer3379/voice-sender/redisc"
+	//"github.com/leezer3379/voice-sender/redisc"
 )
 
 var (
@@ -62,9 +62,9 @@ func main() {
 	}
 
 	config.InitLogger()
-	redisc.InitRedis()
+	//redisc.InitRedis()
 
-	go cron.SendVoice()
+	//go cron.SendVoice()
 
 	//ending()
 	startHttp()
@@ -115,7 +115,7 @@ func ending() {
 	}
 
 	logger.Close()
-	redisc.CloseRedis()
+	//redisc.CloseRedis()
 	fmt.Println("sender stopped successfully")
 }
 
