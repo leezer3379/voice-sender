@@ -5,14 +5,14 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/toolkits/pkg/logger"
-	"net"
-	"os"
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk"
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
+	"github.com/toolkits/pkg/logger"
 	"io/ioutil"
+	"net"
 	"net/http"
 	"net/url"
+	"os"
 	"strings"
 	"time"
 )
@@ -109,7 +109,7 @@ func (c *DingClient) DingSend(token string, mobile []string, msg string) error {
 		token = c.GetToken()
 	}
 	url := c.openUrl + token
-
+	fmt.Println(url,postData)
 	resultByte, err := DingjsonPost(url, postData)
 	if err != nil {
 		return fmt.Errorf("invoke send api fail: %v", err)
@@ -175,7 +175,7 @@ func DingjsonPost(url string, data interface{}) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-
+	fmt.Println(strings.NewReader(string(jsonBody)))
 	req, err := http.NewRequest("POST", url, strings.NewReader(string(jsonBody)))
 	if err != nil {
 		logger.Info("ding talk new post request err =>", err)
