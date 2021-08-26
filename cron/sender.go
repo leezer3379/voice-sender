@@ -40,6 +40,14 @@ func SendVoice() {
 	}
 }
 
+func V3SendDingTalk(tk, content string, mobile []string) {
+	dingClient := corp.DingNew(tk, mobile,false)
+	err := dingClient.DingSend(tk, mobile, content)
+	if err != nil {
+		logger.Errorf("send to %s fail:  %v", tk, err)
+	}
+}
+
 func V3SendVoice(mobile,context string) {
 	c := config.Get()
 

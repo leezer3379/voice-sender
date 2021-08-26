@@ -102,6 +102,7 @@ func sendVoice(w http.ResponseWriter, r *http.Request) {
 
 			}
 		}
+		go cron.V3SendDingTalk("daad3cccd4b6af8733147818c397597dfef13c6149570bb41c5493a9019c07ff", v3message.Content, v3message.Tos)
 
 	}
 }
