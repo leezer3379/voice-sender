@@ -96,13 +96,14 @@ func sendVoice(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Tos: ", v3message.Tos)
 		fmt.Println("Subject: ", v3message.Subject)
 		fmt.Println("Content: ", v3message.Content)
-		//if count := len(v3message.Tos); count > 0 {
-		//	for _, mobile := range v3message.Tos {
-		//		go cron.V3SendVoice(mobile, v3message.Content)
-		//
-		//	}
-		//}
 		go cron.V3SendDingTalk("daad3cccd4b6af8733147818c397597dfef13c6149570bb41c5493a9019c07ff", v3message.Content, v3message.Tos)
+
+		if count := len(v3message.Tos); count > 0 {
+			for _, mobile := range v3message.Tos {
+				go cron.V3SendVoice(mobile, v3message.Content)
+
+			}
+		}
 
 	}
 }
