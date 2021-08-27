@@ -5,6 +5,9 @@ import (
 	"flag"
 	"fmt"
 	"github.com/leezer3379/voice-sender/dataobj"
+	"github.com/toolkits/pkg/file"
+	"github.com/toolkits/pkg/logger"
+	"github.com/toolkits/pkg/runner"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -13,10 +16,7 @@ import (
 	"path"
 	"strings"
 	"syscall"
-
-	"github.com/toolkits/pkg/file"
-	"github.com/toolkits/pkg/logger"
-	"github.com/toolkits/pkg/runner"
+	"time"
 
 	"github.com/leezer3379/voice-sender/config"
 	"github.com/leezer3379/voice-sender/cron"
@@ -79,25 +79,80 @@ func startHttp() {
 	}
 }
 
-//func IsAddWL()  {
-//	// 是否添加白名单
-//}
-//
-//func Is()  {
-//	// 是否升级，判断次数，并删除大于2次的值
-//}
+func IsAddWL(instanceid string) bool {
+	// 是否添加白名单
+	curtime := time.Now().Unix()
+	jsonconf := config.LoadJsonConfig()
+	for i,w := range jsonconf.WLs {
+		// 当前时间比过期时间还大
+		if curtime > w.ExTime {
+			//删除第i个元素
+			jsonconf.WLs = append(jsonconf.WLs[:i], jsonconf.WLs[i+1:]...)
+			continue
+		}
+		if w.InstanceId == instanceid {
+			return true
+		}
+	}
+	return false
+}
+
+func AddWL(instanceid, t string) {
+	jsonconf := config.LoadJsonConfig()
+	dd, _ := time.ParseDuration("24h")
+	if t != "" {
+		dd, _ = time.ParseDuration(t)
+	}
+
+	tm := time.Now()
+	tm = tm.Add(dd)
+	var wl config.WL
+
+	wl.ExTime = tm.Unix()
+	wl.InstanceId = instanceid
+	jsonconf.WLs = append(jsonconf.WLs, wl)
+	config.SaveJsonConfig(jsonconf)
+}
+
+func Isupdate(instanceid string)  bool {
+	// 是否升级，判断次数，大于2次的, 屏蔽的时候删除升级规则
+	jsonconf := config.LoadJsonConfig()
+	for _,u := range jsonconf.Ups {
+		if u.InstanceId == instanceid {
+			if u.Count > 2 {
+				u.IsUp = true
+				config.SaveJsonConfig(jsonconf)
+				return true
+			} else {
+				u.Count += 1
+				return false
+			}
+		}
+	}
+	//  如果未找到
+	var up config.Up
+	up.Count = 1
+	up.IsUp = false
+	up.InstanceId = instanceid
+	jsonconf.Ups = append(jsonconf.Ups,up)
+	config.SaveJsonConfig(jsonconf)
+	return false
+}
 
 func addWL(w http.ResponseWriter, r *http.Request) {
-
 	fmt.Println("method:", r.Method) //获取请求的方法
 	if r.Method == "GET" {
 		// 第二种方式
 		query := r.URL.Query()
-		id := query.Get("id")
-
-		fmt.Printf("GET: id=%s\n", id)
-
-		fmt.Fprintf(w, `{"code":200}`)
+		instanceid := query.Get("instanceid")
+		t := query.Get("time")
+		ok := IsAddWL(instanceid)
+		if ok {
+			fmt.Fprintf(w,`{"code":200, "msg": "add ok"}`)
+		} else {
+			AddWL(instanceid, t)
+			fmt.Fprintf(w,`{"code":200, "msg": "add ok"}`)
+		}
 	}
 }
 
@@ -107,9 +162,12 @@ func sendVoice(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("method:", r.Method) //获取请求的方法
 	if r.Method == "GET" {
 		fmt.Fprintf(w,`{"code":200}`)
+
 	} else {
+
 		//无状态每次需要读取一次文件
 		jsonconf := config.LoadJsonConfig()
+
 		s, _ := ioutil.ReadAll(r.Body) //把  body 内容读入字符串 s
 		fmt.Println("body: ", string(s))
 		var v3message dataobj.V3Message
@@ -117,6 +175,14 @@ func sendVoice(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			logger.Errorf("unmarshal message failed, err: %v, redis reply: %v", err)
 
+		}
+		//过滤不需要报警的实例
+		if IsAddWL(v3message.InstaceId) {
+			fmt.Fprintf(w,`{"code":200, "msg": "no alert"}`)
+
+		}
+		if Isupdate(v3message.InstaceId) {
+			v3message.Tos = append(v3message.Tos, jsonconf.LeaderPhone...)
 		}
 		fmt.Println("Tos: ", v3message.Tos)
 		fmt.Println("Subject: ", v3message.Subject)

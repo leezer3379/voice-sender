@@ -13,19 +13,21 @@ var (
 
 
 type JsonConf struct {
-	WLs []WL   `json:"whitelist"`
-	Tk  string `json:"token"`
-	Ups []Up   `json:"update"`
+	WLs         []WL   `json:"whitelist"`
+	Tk          string `json:"token"`
+	Ups         []Up   `json:"update"`
+	LeaderPhone []string `json:"leaderphone"`
 }
 
 type Up struct {
 	InstanceId string `json:"instanceid"`
 	Count      int64  `json:"count"`
+	IsUp       bool   `json:"isup"`
 }
 
 type WL struct {
 	InstanceId string `json:"instanceid"`
-	STime      int64  `json:"stime"`
+	ExTime     int64  `json:"extime"`
 }
 
 func LoadJsonConfig()(config *JsonConf){
