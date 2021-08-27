@@ -133,7 +133,7 @@ func Isupdate(instanceid string)  bool {
 				config.SaveJsonConfig(jsonconf)
 				return true
 			} else {
-
+				fmt.Println("debug+111111111...................")
 				u.Count += 1
 				config.SaveJsonConfig(jsonconf)
 				return false
