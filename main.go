@@ -83,14 +83,18 @@ func IsAddWL(instanceid string) bool {
 	// 是否添加白名单
 	curtime := time.Now().Unix()
 	jsonconf := config.LoadJsonConfig()
-	for i,w := range jsonconf.WLs {
-		// 当前时间比过期时间还大
-		if curtime > w.ExTime {
+	for i := 0;i < len(jsonconf.WLs); i++ {
+		if curtime > jsonconf.WLs[i].ExTime {
 			//删除第i个元素
 			jsonconf.WLs = append(jsonconf.WLs[:i], jsonconf.WLs[i+1:]...)
+			i--
 			continue
 		}
-		if w.InstanceId == instanceid {
+
+	}
+	for i := 0;i < len(jsonconf.WLs); i++ {
+
+		if jsonconf.WLs[i].InstanceId == instanceid {
 			return true
 		}
 	}
@@ -99,6 +103,7 @@ func IsAddWL(instanceid string) bool {
 
 func AddWL(instanceid, t string) {
 	jsonconf := config.LoadJsonConfig()
+	//白名单过时24小时
 	dd, _ := time.ParseDuration("24h")
 	if t != "" {
 		dd, _ = time.ParseDuration(t)
@@ -118,10 +123,10 @@ func Isupdate(instanceid string)  bool {
 	// 是否升级，判断次数，大于2次的, 屏蔽的时候删除升级规则
 	jsonconf := config.LoadJsonConfig()
 	for _,u := range jsonconf.Ups {
-		fmt.Println("debug...................")
-		fmt.Println(u)
-		fmt.Println(instanceid)
-		fmt.Println("debug...................")
+		//fmt.Println("debug...................")
+		//fmt.Println(u)
+		//fmt.Println(instanceid)
+		//fmt.Println("debug...................")
 		if u.InstanceId == instanceid {
 			if u.Count > 2 {
 				u.IsUp = true
@@ -135,11 +140,25 @@ func Isupdate(instanceid string)  bool {
 			}
 		}
 	}
+	// 在新增之前清理24小时
+	curtime := time.Now().Unix()
+	for i := 0; i < len(jsonconf.Ups); i++ {
+		if curtime > jsonconf.Ups[i].ExTime {
+			//删除第i个元素
+			jsonconf.Ups = append(jsonconf.Ups[:i], jsonconf.Ups[i+1:]...)
+			i--
+		}
+	}
 	//  如果未找到
 	var up config.Up
 	up.Count = 1
 	up.IsUp = false
 	up.InstanceId = instanceid
+	// 升级过时24小时
+	dd, _ := time.ParseDuration("24h")
+	tm := time.Now()
+	tm = tm.Add(dd)
+	up.ExTime = tm.Unix()
 	jsonconf.Ups = append(jsonconf.Ups,up)
 	config.SaveJsonConfig(jsonconf)
 	return false

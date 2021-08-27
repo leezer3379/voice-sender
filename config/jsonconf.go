@@ -23,6 +23,8 @@ type Up struct {
 	InstanceId string `json:"instanceid"`
 	Count      int64  `json:"count"`
 	IsUp       bool   `json:"isup"`
+	ExTime     int64  `json:"extime"`
+
 }
 
 type WL struct {
