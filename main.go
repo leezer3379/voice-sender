@@ -177,16 +177,17 @@ func sendVoice(w http.ResponseWriter, r *http.Request) {
 
 		}
 		//过滤不需要报警的实例
-		if IsAddWL(v3message.InstaceId) {
+		if IsAddWL(v3message.InstanceId) {
 			fmt.Fprintf(w,`{"code":200, "msg": "no alert"}`)
 
 		}
-		if Isupdate(v3message.InstaceId) {
+		// 是否升级
+		if Isupdate(v3message.InstanceId) {
 			v3message.Tos = append(v3message.Tos, jsonconf.LeaderPhone...)
 		}
 		fmt.Println("Tos: ", v3message.Tos)
 		fmt.Println("Subject: ", v3message.Subject)
-		fmt.Println("InstaceId: ", v3message.InstaceId)
+		fmt.Println("InstaceId: ", v3message.InstanceId)
 		fmt.Println("Content: ", v3message.Content)
 
 		go cron.V3SendDingTalk(jsonconf.Tk, v3message.Content, v3message.Tos)
