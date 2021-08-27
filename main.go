@@ -167,6 +167,8 @@ func sendVoice(w http.ResponseWriter, r *http.Request) {
 
 		//无状态每次需要读取一次文件
 		jsonconf := config.LoadJsonConfig()
+		fmt.Println(jsonconf)
+		fmt.Println(jsonconf)
 
 		s, _ := ioutil.ReadAll(r.Body) //把  body 内容读入字符串 s
 		fmt.Println("body: ", string(s))
