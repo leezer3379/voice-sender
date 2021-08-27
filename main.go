@@ -123,10 +123,10 @@ func Isupdate(instanceid string)  bool {
 	// 是否升级，判断次数，大于2次的, 屏蔽的时候删除升级规则
 	jsonconf := config.LoadJsonConfig()
 	for _,u := range jsonconf.Ups {
-		//fmt.Println("debug...................")
-		//fmt.Println(u)
-		//fmt.Println(instanceid)
-		//fmt.Println("debug...................")
+		fmt.Println("debug...................")
+		fmt.Println(u)
+		fmt.Println(instanceid)
+		fmt.Println("debug...................")
 		if u.InstanceId == instanceid {
 			if u.Count > 2 {
 				u.IsUp = true
