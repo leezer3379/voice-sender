@@ -130,6 +130,7 @@ func Isupdate(instanceid string)  bool {
 			} else {
 
 				u.Count += 1
+				config.SaveJsonConfig(jsonconf)
 				return false
 			}
 		}
