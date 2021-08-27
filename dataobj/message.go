@@ -3,9 +3,10 @@ package dataobj
 import "time"
 
 type V3Message struct {
-	Tos     []string `json:"tos"`
-	Subject string   `json:"subject"`
-	Content string   `json:"content"`
+	Tos       []string `json:"tos"`
+	Subject   string   `json:"subject"`
+	InstaceId string   `json:"instanceid"`
+	Content   string   `json:"content"`
 }
 
 type Message struct {

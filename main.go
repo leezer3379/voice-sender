@@ -56,6 +56,7 @@ func main() {
 	aconf()
 	pconf()
 
+
 	if *test != "" {
 		config.Test(strings.Split(*test, ","))
 		os.Exit(0)
@@ -71,20 +72,44 @@ func main() {
 }
 func startHttp() {
 	http.HandleFunc("/voice", sendVoice) //设置访问的路由
+	http.HandleFunc("/addwl", addWL) //设置访问的路由
 	err := http.ListenAndServe("0.0.0.0:2008", nil) //设置监听的端口
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
 }
 
+//func IsAddWL()  {
+//	// 是否添加白名单
+//}
+//
+//func Is()  {
+//	// 是否升级，判断次数，并删除大于2次的值
+//}
+
+func addWL(w http.ResponseWriter, r *http.Request) {
+
+	fmt.Println("method:", r.Method) //获取请求的方法
+	if r.Method == "GET" {
+		// 第二种方式
+		query := r.URL.Query()
+		id := query.Get("id")
+
+		fmt.Printf("GET: id=%s\n", id)
+
+		fmt.Fprintf(w, `{"code":200}`)
+	}
+}
+
+
 func sendVoice(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println("method:", r.Method) //获取请求的方法
 	if r.Method == "GET" {
-
-		fmt.Println("OK")
+		fmt.Fprintf(w,`{"code":200}`)
 	} else {
-
+		//无状态每次需要读取一次文件
+		jsonconf := config.LoadJsonConfig()
 		s, _ := ioutil.ReadAll(r.Body) //把  body 内容读入字符串 s
 		fmt.Println("body: ", string(s))
 		var v3message dataobj.V3Message
@@ -95,8 +120,10 @@ func sendVoice(w http.ResponseWriter, r *http.Request) {
 		}
 		fmt.Println("Tos: ", v3message.Tos)
 		fmt.Println("Subject: ", v3message.Subject)
+		fmt.Println("InstaceId: ", v3message.InstaceId)
 		fmt.Println("Content: ", v3message.Content)
-		go cron.V3SendDingTalk("daad3cccd4b6af8733147818c397597dfef13c6149570bb41c5493a9019c07ff", v3message.Content, v3message.Tos)
+
+		go cron.V3SendDingTalk(jsonconf.Tk, v3message.Content, v3message.Tos)
 
 		if count := len(v3message.Tos); count > 0 {
 			for _, mobile := range v3message.Tos {
