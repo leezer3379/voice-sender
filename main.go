@@ -86,6 +86,7 @@ func IsAddWL(instanceid string) bool {
 	for i := 0;i < len(jsonconf.WLs); i++ {
 		if curtime > jsonconf.WLs[i].ExTime {
 			//删除第i个元素
+			fmt.Println("删除元素")
 			jsonconf.WLs = append(jsonconf.WLs[:i], jsonconf.WLs[i+1:]...)
 			i--
 			config.SaveJsonConfig(jsonconf)
