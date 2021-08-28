@@ -158,7 +158,7 @@ func (c *Client) Send(mobile,subject,content string) error {
 	request.QueryParams["RegionId"] = "cn-beijing"
 	request.QueryParams["CalledNumber"] = mobile
 	request.QueryParams["TtsCode"] = c.TtsCode
-	request.QueryParams["CalledShowNumber"] = c.CalledShowNumber
+	//request.QueryParams["CalledShowNumber"] = c.CalledShowNumber
 	request.QueryParams["TtsParam"] = endttsparam
 
 	response, err := client.ProcessCommonRequest(request)
