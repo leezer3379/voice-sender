@@ -55,8 +55,9 @@ func V3SendVoice(mobile,subject,context string) {
 
 	err := voiceClient.Send(mobile,subject,context)
 	if err != nil {
-		logger.Errorf("api send to %s fail:  %v", mobile, err)
+		logger.Errorf("V3SendVoice send to %s fail:  %v", mobile, err)
 	}
+
 }
 
 func SendAllVoice(messages []*dataobj.Message) {

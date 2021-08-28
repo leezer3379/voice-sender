@@ -142,6 +142,8 @@ func (c *Client) Send(mobile,subject,content string) error {
 
 	dataType , _ := json.Marshal(sendttsparam)
 	endttsparam := string(dataType)
+	fmt.Println(endttsparam)
+	fmt.Println(os.Getenv("VOICE_REGION_ID"), os.Getenv("VOICE_ACCESS_KEY_ID"), os.Getenv("VOICE_ACCESS_KEY_SECRET"))
 	client, err := sdk.NewClientWithAccessKey(os.Getenv("VOICE_REGION_ID"), os.Getenv("VOICE_ACCESS_KEY_ID"), os.Getenv("VOICE_ACCESS_KEY_SECRET"))
 
 	if err != nil {
@@ -165,7 +167,20 @@ func (c *Client) Send(mobile,subject,content string) error {
 	if err != nil {
 		return err
 	}
-	fmt.Print(response.GetHttpContentString())
+	result := response.GetHttpContentString()
+	var r map[string]string
+	json.Unmarshal([]byte(result), &r)
+	switch {
+	case r["Code"] == "isv.BUSINESS_LIMIT_CONTROL":
+		fmt.Println("发送消息")
+		fmt.Println(r["Message"],mobile)
+		//jsonconf := config.LoadJsonConfig()
+
+		//cron.V3SendDingTalk(jsonconf.Tk, fmt.Sprintf("执行错误\n%s",r["Message"]), []string{mobile})
+
+	default:
+		fmt.Print(response.GetHttpContentString());
+	}
 	return err
 }
 

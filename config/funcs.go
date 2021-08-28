@@ -37,12 +37,8 @@ func Test(args []string) {
 
 	for i := 0; i < len(args); i++ {
 		mobile := args[i]
-		err := voiceClient.Send(mobile, "test",c.Voice.TtsParam.Sname)
-		if err != nil {
-			logger.Error("test send to %s fail: %v\n", args[i], err)
-		} else {
-			logger.Info(fmt.Sprintf("test send to %s success!!!\n", args[i]))
-		}
+		voiceClient.Send(mobile, "阿里云Rds",c.Voice.TtsParam.Sname)
+
 		time.Sleep(time.Millisecond*10)
 	}
 }

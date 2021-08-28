@@ -20,7 +20,7 @@ consumer:
   worker: 10
 
 voice:
-  ttscode: "TTS_xxx"
+  ttscode: "TTS_xxxx"
   calledshownumber: "00000000000"
   ttsparam:
     sname: "策略名称"
