@@ -120,8 +120,18 @@ func AddWL(instanceid, t string) {
 }
 
 func Isupdate(instanceid string)  bool {
-	// 是否升级，判断次数，大于2次的, 屏蔽的时候删除升级规则
 	jsonconf := config.LoadJsonConfig()
+
+	// 在新增之前清理24小时
+	curtime := time.Now().Unix()
+	for i := 0; i < len(jsonconf.Ups); i++ {
+		if curtime > jsonconf.Ups[i].ExTime {
+			//删除第i个元素
+			jsonconf.Ups = append(jsonconf.Ups[:i], jsonconf.Ups[i+1:]...)
+			i--
+		}
+	}
+	// 是否升级，判断次数，大于2次的, 屏蔽的时候删除升级规则
 	for i := 0; i < len(jsonconf.Ups); i++ {
 		if jsonconf.Ups[i].InstanceId == instanceid {
 			jsonconf.Ups[i].Count += 1
@@ -135,15 +145,7 @@ func Isupdate(instanceid string)  bool {
 		}
 	}
 
-	// 在新增之前清理24小时
-	curtime := time.Now().Unix()
-	for i := 0; i < len(jsonconf.Ups); i++ {
-		if curtime > jsonconf.Ups[i].ExTime {
-			//删除第i个元素
-			jsonconf.Ups = append(jsonconf.Ups[:i], jsonconf.Ups[i+1:]...)
-			i--
-		}
-	}
+
 	//  如果未找到
 	var up config.Up
 	up.Count = 1
