@@ -122,24 +122,44 @@ func AddWL(instanceid, t string) {
 func Isupdate(instanceid string)  bool {
 	// 是否升级，判断次数，大于2次的, 屏蔽的时候删除升级规则
 	jsonconf := config.LoadJsonConfig()
-	for _,u := range jsonconf.Ups {
+	for i := 1; i < len(jsonconf.Ups); i++ {
 		fmt.Println("debug...................")
-		fmt.Println(u)
+		fmt.Println(jsonconf.Ups[i])
 		fmt.Println(instanceid)
 		fmt.Println("debug...................")
-		if u.InstanceId == instanceid {
-			if u.Count > 2 {
-				u.IsUp = true
+		if jsonconf.Ups[i].InstanceId == instanceid {
+			if jsonconf.Ups[i].Count > 2 {
+				jsonconf.Ups[i].IsUp = true
 				config.SaveJsonConfig(jsonconf)
 				return true
 			} else {
 				fmt.Println("debug+111111111...................")
-				u.Count += 1
+				jsonconf.Ups[i].Count += 1
+				fmt.Println(jsonconf.Ups[i].Count)
 				config.SaveJsonConfig(jsonconf)
 				return false
 			}
 		}
 	}
+	//for _,u := range jsonconf.Ups {
+	//	fmt.Println("debug...................")
+	//	fmt.Println(u)
+	//	fmt.Println(instanceid)
+	//	fmt.Println("debug...................")
+	//	if u.InstanceId == instanceid {
+	//		if u.Count > 2 {
+	//			u.IsUp = true
+	//			config.SaveJsonConfig(jsonconf)
+	//			return true
+	//		} else {
+	//			fmt.Println("debug+111111111...................")
+	//			u.Count += 1
+	//
+	//			config.SaveJsonConfig(jsonconf)
+	//			return false
+	//		}
+	//	}
+	//}
 	// 在新增之前清理24小时
 	curtime := time.Now().Unix()
 	for i := 0; i < len(jsonconf.Ups); i++ {
