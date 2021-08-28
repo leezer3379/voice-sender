@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk"
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests"
+
 	"github.com/toolkits/pkg/logger"
 	"io/ioutil"
 	"net"
@@ -172,10 +173,10 @@ func (c *Client) Send(mobile,subject,content string) error {
 	json.Unmarshal([]byte(result), &r)
 	switch {
 	case r["Code"] == "isv.BUSINESS_LIMIT_CONTROL":
-		fmt.Println("发送消息")
+		fmt.Println("失败发送消息")
 		fmt.Println(r["Message"],mobile)
 		//jsonconf := config.LoadJsonConfig()
-
+		//
 		//cron.V3SendDingTalk(jsonconf.Tk, fmt.Sprintf("执行错误\n%s",r["Message"]), []string{mobile})
 
 	default:
