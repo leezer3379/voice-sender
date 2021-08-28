@@ -34,6 +34,6 @@ _test
 .vscode
 .DS_Store
 .cache-loader
-/etc/voice-sender.yml
-/voice-sender*
-/etc/conf.json
+etc/voice-sender.yml
+voice-sender*
+etc/conf.json
