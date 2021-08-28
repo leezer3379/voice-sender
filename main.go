@@ -207,7 +207,7 @@ func sendVoice(w http.ResponseWriter, r *http.Request) {
 		//过滤不需要报警的实例
 		if IsAddWL(v3message.InstanceId) {
 			fmt.Fprintf(w,`{"code":200, "msg": "no alert"}`)
-
+			return
 		}
 		// 是否升级
 		if Isupdate(v3message.InstanceId) {
