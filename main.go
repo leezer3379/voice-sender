@@ -231,7 +231,7 @@ func sendVoice(w http.ResponseWriter, r *http.Request) {
 		// 是否升级
 		if Isupdate(v3message.InstanceId) {
 			v3message.Tos = append(v3message.Tos, jsonconf.LeaderPhone...)
-			v3message.Content += "\n已升级上报"
+			v3message.Content += "\n已升级上报@刘翔"
 		}
 		fmt.Println("Tos: ", v3message.Tos)
 		fmt.Println("Subject: ", v3message.Subject)

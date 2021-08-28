@@ -51,7 +51,7 @@ func V3SendDingTalk(tk, content string, mobile []string) {
 func V3SendVoice(mobile,subject,context string) {
 	c := config.Get()
 
-	voiceClient := corp.New(c.Voice.Mobiles,c.Voice.Message, c.Voice.TtsCode,c.Voice.CalledShowNumber, c.Voice.TtsParam.Sname)
+	voiceClient := corp.New(c.Voice.Mobiles, c.Voice.Message, c.Voice.TtsCode, c.Voice.CalledShowNumber, c.Voice.TtsParam.Sname)
 
 	err := voiceClient.Send(mobile,subject,context)
 	if err != nil {
