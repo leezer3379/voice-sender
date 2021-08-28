@@ -174,7 +174,7 @@ func addWL(w http.ResponseWriter, r *http.Request) {
 		t := query.Get("time")
 		ok := IsAddWL(instanceid)
 		if ok {
-			fmt.Fprintf(w,`{"code":200, "msg": "add ok"}`)
+			fmt.Fprintf(w,`{"code":200, "msg": "exist ok"}`)
 		} else {
 			AddWL(instanceid, t)
 			fmt.Fprintf(w,`{"code":200, "msg": "add ok"}`)
