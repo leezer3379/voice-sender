@@ -131,7 +131,8 @@ func Isupdate(instanceid string)  bool {
 			i--
 		}
 	}
-	// 是否升级，判断次数，大于2次的, 屏蔽的时候删除升级规则
+
+	// 是否升级，判断次数，大于2次的
 	for i := 0; i < len(jsonconf.Ups); i++ {
 		if jsonconf.Ups[i].InstanceId == instanceid {
 			jsonconf.Ups[i].Count += 1
@@ -140,6 +141,7 @@ func Isupdate(instanceid string)  bool {
 				config.SaveJsonConfig(jsonconf)
 				return true
 			} else {
+				config.SaveJsonConfig(jsonconf)
 				return false
 			}
 		}
