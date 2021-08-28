@@ -37,7 +37,7 @@ func Test(args []string) {
 
 	for i := 0; i < len(args); i++ {
 		mobile := args[i]
-		err := voiceClient.Send(mobile, c.Voice.TtsParam.Sname)
+		err := voiceClient.Send(mobile, "test",c.Voice.TtsParam.Sname)
 		if err != nil {
 			logger.Error("test send to %s fail: %v\n", args[i], err)
 		} else {

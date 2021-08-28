@@ -131,15 +131,14 @@ func (c *DingClient) DingSend(token string, mobile []string, msg string) error {
 
 
 // Send 发送信息
-func (c *Client) Send(mobile string, sname string) error {
-	//var sendttsparam map[string]string
-	//sendttsparam["ops"] = c
+func (c *Client) Send(mobile,subject,content string) error {
+
 	if mobile == "" {
-		fmt.Printf("%s 未填写手机号码。",sname)
+		fmt.Printf("%s 未填写手机号码。",content)
 		return nil
 	}
 	sendttsparam := make(map[string]interface{})
-	sendttsparam["Sname"] = sname
+	sendttsparam["Sname"] = subject
 
 	dataType , _ := json.Marshal(sendttsparam)
 	endttsparam := string(dataType)

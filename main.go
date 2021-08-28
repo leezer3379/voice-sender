@@ -242,7 +242,7 @@ func sendVoice(w http.ResponseWriter, r *http.Request) {
 
 		if count := len(v3message.Tos); count > 0 {
 			for _, mobile := range v3message.Tos {
-				go cron.V3SendVoice(mobile, v3message.Content)
+				go cron.V3SendVoice(mobile, v3message.Subject, v3message.Content)
 
 			}
 		}

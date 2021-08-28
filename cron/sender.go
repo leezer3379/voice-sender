@@ -48,12 +48,12 @@ func V3SendDingTalk(tk, content string, mobile []string) {
 	}
 }
 
-func V3SendVoice(mobile,context string) {
+func V3SendVoice(mobile,subject,context string) {
 	c := config.Get()
 
 	voiceClient := corp.New(c.Voice.Mobiles,c.Voice.Message, c.Voice.TtsCode,c.Voice.CalledShowNumber, c.Voice.TtsParam.Sname)
 
-	err := voiceClient.Send(mobile,context)
+	err := voiceClient.Send(mobile,subject,context)
 	if err != nil {
 		logger.Errorf("api send to %s fail:  %v", mobile, err)
 	}
@@ -79,7 +79,7 @@ func sendVoice(message *dataobj.Message) {
 	// 重置发送数据
 	if count := len(mobiles); count > 0 {
 		for _, mobile := range mobiles {
-			err := voiceClient.Send(mobile, content)
+			err := voiceClient.Send(mobile, "test", content)
 			if err != nil {
 				logger.Errorf("send to %s fail:  %v", message.Tos, err)
 			}
