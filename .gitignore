@@ -36,3 +36,4 @@ _test
 .cache-loader
 /etc/voice-sender.yml
 /voice-sender*
+/etc/conf.json
