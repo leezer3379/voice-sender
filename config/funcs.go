@@ -37,7 +37,7 @@ func Test(args []string) {
 
 	for i := 0; i < len(args); i++ {
 		mobile := args[i]
-		voiceClient.Send(mobile, "阿里云Rds",c.Voice.TtsParam.Sname)
+		voiceClient.Send(mobile, "阿里云 Mongo",c.Voice.TtsParam.Sname)
 
 		time.Sleep(time.Millisecond*10)
 	}
