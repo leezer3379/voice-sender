@@ -246,7 +246,6 @@ func aconf() {
 	if *conf != "" && file.IsExist(*conf) {
 		return
 	}
-	//runner.Cwd = "/Users/lize/gopath/src/github.com/leezer3379/voice-sender"
 	*conf = path.Join(runner.Cwd, "etc", "voice-sender.local.yml")
 	if file.IsExist(*conf) {
 		return
